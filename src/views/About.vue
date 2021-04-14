@@ -1,5 +1,5 @@
 <template>
-  <div id="mapDiv"></div>
+  <div id="map-container"></div>
 </template>
 
 <script>
@@ -10,7 +10,7 @@ import OSM from "ol/source/OSM";
 export default {
   mounted() {
     new Map({
-      target: "mapDiv",
+      target: "map-container",
       layers: [
         new TileLayer({
           source: new OSM(),
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style scoped>
-#mapDiv {
+#map-container {
   width: 100%;
   height: 100%;
 }
