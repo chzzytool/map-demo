@@ -11,9 +11,8 @@
 <style lang="less">
 html,
 body {
-  padding: 0;
   margin: 0;
-  height: 100%;
+  padding: 0;
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -21,12 +20,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
 }
 
 #nav {
-  padding: 30px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  float: left;
+  z-index: 100;
+  padding: 10px;
 
   a {
     font-weight: bold;
