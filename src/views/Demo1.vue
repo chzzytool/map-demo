@@ -114,17 +114,19 @@ export default {
         }),
       });
 
-      const vectorSource = new VectorSource({
-        features: new GeoJSON().readFeatures(require("../assets/demo.json")),
-      });
+      //本地geojson例子
+      // const vectorSource = new VectorSource({
+      //   features: new GeoJSON().readFeatures(require("../assets/demo.json")),
+      // });
 
+      // 线上geojson例子
       const vectorLayer = new VectorLayer({
-        // source: new VectorSource({
-        //   projection: "EPSG:4326",
-        //   url: "https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json",
-        //   format: new GeoJSON(),
-        // }),
-        source: vectorSource,
+        // source: vectorSource,
+        source: new VectorSource({
+          projection: "EPSG:4326",
+          url: "https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json",
+          format: new GeoJSON(),
+        }),
         style: function (feature) {
           style.getText().setText(feature.get("name"));
           return style;
