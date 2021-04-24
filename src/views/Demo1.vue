@@ -63,11 +63,8 @@
         </div>
       </div>
     </div>
-    <!-- <div ref="info" class="info-box" v-if="info.name"> -->
-    <div ref="info" class="info-box">
+    <div ref="info" class="info-box" v-if="info.name">
       <span class="info1">省名称：{{ info.name }} </span>
-      <span class="info1">搜索：{{ searchKey }} </span>
-      <span class="info1">图层：{{ layerTypeValue }} </span>
     </div>
   </div>
 </template>
@@ -81,6 +78,8 @@ import VectorSource from "ol/source/Vector";
 import View from "ol/View";
 import { Fill, Stroke, Style, Text } from "ol/style";
 import * as olProj from "ol/proj";
+import { OSM } from "ol/source";
+import { Tile as TileLayer } from "ol/layer";
 
 export default {
   data() {
@@ -115,12 +114,17 @@ export default {
         }),
       });
 
+      const vectorSource = new VectorSource({
+        features: new GeoJSON().readFeatures(require("../assets/demo.json")),
+      });
+
       const vectorLayer = new VectorLayer({
-        source: new VectorSource({
-          // url: "https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json",
-          url: "https://geo.datav.aliyun.com/areas_v2/bound/100000.json",
-          format: new GeoJSON(),
-        }),
+        // source: new VectorSource({
+        //   projection: "EPSG:4326",
+        //   url: "https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json",
+        //   format: new GeoJSON(),
+        // }),
+        source: vectorSource,
         style: function (feature) {
           style.getText().setText(feature.get("name"));
           return style;
@@ -128,7 +132,13 @@ export default {
       });
 
       const map = new Map({
-        layers: [vectorLayer],
+        // layers: [vectorLayer],
+        layers: [
+          new TileLayer({
+            source: new OSM(),
+          }),
+          vectorLayer,
+        ],
         target: "map",
         view: new View({
           //经纬度坐标(4326)转换成墨卡托(3857)
@@ -230,9 +240,21 @@ export default {
       });
     },
 
+    //搜索框输入完成后失去焦点事件
     handleSearchChange(e) {
       const value = e.target.value;
-      console.log("value->", value);
+      if (value) {
+        console.log("value->", value);
+      }
+    },
+    //图层选择变化事件
+    handleLayerTypeValueChange(value) {
+      console.log("图层类型值value-->", value);
+    },
+  },
+  watch: {
+    layerTypeValue(value) {
+      this.handleLayerTypeValueChange(value);
     },
   },
   mounted() {
